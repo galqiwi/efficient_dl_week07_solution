@@ -32,7 +32,7 @@ class InstanceDetectorServicer(inference_pb2_grpc.InstanceDetectorServicer):
 
 
 def main():
-    server = grpc.server(futures.ThreadPoolExecutor(max_workers=1))
+    server = grpc.server(futures.ThreadPoolExecutor(max_workers=3))
     inference_pb2_grpc.add_InstanceDetectorServicer_to_server(InstanceDetectorServicer(), server)
     server.add_insecure_port('0.0.0.0:9090')
     server.start()
