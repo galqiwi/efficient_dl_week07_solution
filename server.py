@@ -11,13 +11,11 @@ import requests
 WEIGHTS = FasterRCNN_ResNet50_FPN_V2_Weights.DEFAULT
 app = Flask(__name__, static_url_path="")
 metrics = PrometheusMetrics(app)
-pred_counter = Counter("app_http_inference_count", "")
+pred_counter = Counter("app_http_inference_count", "app_http_inference_count")
 model = fasterrcnn_resnet50_fpn_v2(weights=WEIGHTS, box_score_thresh=0.9)
-
 model.eval()
 
 
-@cache
 def _predict(url):
     response = requests.get(url)
 
@@ -41,12 +39,3 @@ def predict():
     pred_counter.inc()
 
     return output
-
-
-def main():
-    
-    app.run(host='0.0.0.0', port=8080)
-
-
-if __name__ == '__main__':
-    main()
