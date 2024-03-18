@@ -37,7 +37,7 @@ def predict():
 def main():
     metrics = PrometheusMetrics(app)
     
-    app.run(host='0.0.0.0', port=8080, threaded=False, processes=3)
+    app.run(host='0.0.0.0', port=8080, threaded=True)
 
 
 if __name__ == '__main__':
