@@ -10,3 +10,4 @@ grpcio-tools==1.62.1
 prometheus-flask-exporter==0.23.0
 prometheus_client==0.20.0
 supervisor==4.2.5
+gunicorn
