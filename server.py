@@ -17,10 +17,8 @@ model = fasterrcnn_resnet50_fpn_v2(weights=WEIGHTS, box_score_thresh=0.9)
 model.eval()
 
 
-@app.route("/predict", methods=['POST'])
-def predict():
-    data = request.get_json(force=True)
-    url = data['url']
+@cache
+def _predict(url):
     response = requests.get(url)
 
     imgage_raw = Image.open(BytesIO(response.content))
@@ -29,11 +27,20 @@ def predict():
     
     labels = [WEIGHTS.meta["categories"][i] for i in prediction["labels"]]
 
-    pred_counter.inc()
-
     return jsonify({
         "objects": labels
     })
+
+
+@app.route("/predict", methods=['POST'])
+def predict():
+    data = request.get_json(force=True)
+    url = data['url']
+    output = _predict(url)
+
+    pred_counter.inc()
+
+    return output
 
 
 def main():
